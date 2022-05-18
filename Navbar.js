@@ -14,8 +14,7 @@ class Navbar extends Component {
           rel="noopener noreferrer"
         >
           <img src={box} width="30" height="30" className="align-top" alt="" />
-          D$t0r@g3
-        </a>
+DSTORAGE        </a>
         <ul className="navbar-nav px-3">
           <li>
             <small id="account">
