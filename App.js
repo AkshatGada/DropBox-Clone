@@ -6,7 +6,7 @@ import Web3 from 'web3';
 import './App.css';
 
 const ipfsClient = require('ipfs-http-client')
-const ipfs = ipfsClient({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' }) // leaving out the arguments will default to these values
+const ipfs = ipfsClient({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' }) 
 
 class App extends Component {
 
@@ -30,20 +30,15 @@ class App extends Component {
 
   async loadBlockchainData() {
     const web3 = window.web3
-    // Load account
     const accounts = await web3.eth.getAccounts()
     this.setState({ account: accounts[0] })
-    // Network ID
     const networkId = await web3.eth.net.getId()
     const networkData = DStorage.networks[networkId]
     if(networkData) {
-      // Assign contract
       const dstorage = new web3.eth.Contract(DStorage.abi, networkData.address)
       this.setState({ dstorage })
-      // Get files amount
       const filesCount = await dstorage.methods.fileCount().call()
       this.setState({ filesCount })
-      // Load files&sort by the newest
       for (var i = filesCount; i >= 1; i--) {
         const file = await dstorage.methods.files(i).call()
         this.setState({
@@ -55,7 +50,6 @@ class App extends Component {
     }
   }
 
-  // Get file from user
   captureFile = event => {
     event.preventDefault()
 
@@ -76,7 +70,6 @@ class App extends Component {
   uploadFile = description => {
     console.log("Submitting file to IPFS...")
 
-    // Add file to the IPFS
     ipfs.add(this.state.buffer, (error, result) => {
       console.log('IPFS result', result.size)
       if(error) {
@@ -85,7 +78,6 @@ class App extends Component {
       }
 
       this.setState({ loading: true })
-      // Assign value for the file without extension
       if(this.state.type === ''){
         this.setState({type: 'none'})
       }
